@@ -1,12 +1,12 @@
 import logo from "../assets/logo.png";
 import slogo from "../assets/slogo.png";
-import des from "../assets/des.png";
+import des from "../assets/silex.png";
 import des1 from "../assets/des1.png";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export const useParallaxFade = (speed = 0.3) => {
-  const [style, setStyle] = useState({});
+  // const [style, setStyle] = useState({});
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,17 +15,16 @@ export const useParallaxFade = (speed = 0.3) => {
       elements.forEach((el) => {
         const rect = el.getBoundingClientRect();
         const windowHeight = window.innerHeight;
-         const startFade = windowHeight * 0.85;
-         const endFade = windowHeight * 0.15;
+        const startFade = windowHeight * 0.85;
+        const endFade = windowHeight * 0.15;
 
-         let progress = 0;
+        let progress = 0;
 
-         if (rect.top <= startFade && rect.bottom >= endFade) {
-           progress =
-             1 - (rect.top - endFade) / (startFade - endFade);
-         }
+        if (rect.top <= startFade && rect.bottom >= endFade) {
+          progress = 1 - (rect.top - endFade) / (startFade - endFade);
+        }
 
-         const clamped = Math.max(0, Math.min(1, progress));
+        const clamped = Math.max(0, Math.min(1, progress));
 
         // const start = windowHeight * 0.95; // 15% from bottom
         // const end = windowHeight * 0.05;   // 15% from top
@@ -48,11 +47,11 @@ export const useParallaxFade = (speed = 0.3) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [speed]);
 
-  return style;
+  // return style;
 };
 
 const Home = () => {
-   useParallaxFade();
+  useParallaxFade();
   const location = useLocation();
   const navlink = [
     { name: "Home", to: "/" },
@@ -139,18 +138,18 @@ const Home = () => {
             </h2>
 
             {/* RIGHT COLUMN — sticky hero image ONLY on desktop */}
-          <div className="w-full block mt-3 md:hidden">
-            <img
-              src={des}
-              alt="Design"
-              className="hidden md:block w-full h-full"
-            />
-            <img
-              src={des1}
-              alt="Design"
-              className="block md:hidden w-full h-full"
-            />
-          </div>
+            <div className="w-full block mt-3 md:hidden">
+              <img
+                src={des}
+                alt="Design"
+                className="hidden md:block w-full h-full"
+              />
+              <img
+                src={des1}
+                alt="Design"
+                className="block md:hidden w-full h-full"
+              />
+            </div>
 
             <p className="mt-10 text-xl md:w-4/5 text-center md:text-start text-white">
               Silex Secure has developed and implemented digital platforms
@@ -163,16 +162,18 @@ const Home = () => {
                 {/* Top Row - 2 Items */}
                 <div className="flex flex-row gap-8 justify-center">
                   <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
-                    <h3 
-                    data-parallax
-                    className="text-lg md:text-4xl text-start text-white font-black mb-3">
+                    <h3
+                      data-parallax
+                      className="text-lg md:text-4xl text-start text-white font-black mb-3"
+                    >
                       aviation
                     </h3>
                   </div>
                   <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
                     <h3
-                     data-parallax
-                    className="text-lg md:text-4xl text-start text-white font-black mb-3">
+                      data-parallax
+                      className="text-lg md:text-4xl text-start text-white font-black mb-3"
+                    >
                       e-commerce
                     </h3>
                   </div>
@@ -182,8 +183,9 @@ const Home = () => {
                 <div className="flex justify-center ">
                   <div className="md:flex-1 w-[180px]  md:max-w-xs bg-black/50 p-3 rounded-full">
                     <h3
-                     data-parallax
-                    className="text-lg md:text-4xl text-start text-white font-black mb-4">
+                      data-parallax
+                      className="text-lg md:text-4xl text-start text-white font-black mb-4"
+                    >
                       enterprise
                     </h3>
                   </div>
@@ -192,16 +194,18 @@ const Home = () => {
                 {/* Bottom Row - 2 Items */}
                 <div className="flex flex-row gap-8 justify-center">
                   <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
-                    <h3 
-                     data-parallax
-                    className="text-lg md:text-4xl text-start text-white font-black mb-3">
+                    <h3
+                      data-parallax
+                      className="text-lg md:text-4xl text-start text-white font-black mb-3"
+                    >
                       oil and gas
                     </h3>
                   </div>
                   <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
                     <h3
-                     data-parallax
-                    className="text-lg md:text-4xl text-start text-white font-black mb-3">
+                      data-parallax
+                      className="text-lg md:text-4xl text-start text-white font-black mb-3"
+                    >
                       government
                     </h3>
                   </div>
@@ -269,15 +273,17 @@ const Home = () => {
 
           {/* 1. Top Center - Security By Design */}
           <div className="absolute top-[-2px] md:top-8 left-1/2 -translate-x-1/2 flex flex-col items-center z-10">
-            <div 
-            data-parallax
-            className="bg-zinc-900 text-white z-20 px-8 py-3 rounded-3xl text-sm md:text-xl font-semibold tracking-wide border border-zinc-700 mb-4">
+            <div
+              data-parallax
+              className="bg-zinc-900 text-white z-20 px-8 py-3 rounded-3xl text-sm md:text-xl font-semibold tracking-wide border border-zinc-700 mb-4"
+            >
               Security By Design
             </div>
             <div className="bg-red-600 -mt-8 text-white px-3 py-4 rounded-3xl max-w-[250px] md:max-w-sm w-full ">
-              <p 
-              data-parallax
-              className="text-sm md:text-xl font-light leading-relaxed">
+              <p
+                data-parallax
+                className="text-sm md:text-xl font-light leading-relaxed"
+              >
                 Security Is Embedded From System Architecture To Deployment.
               </p>
             </div>
@@ -285,15 +291,17 @@ const Home = () => {
 
           {/* 2. Right Side - User-Centered Design */}
           <div className="absolute top-1/2 right-[30px] md:right-[-180px] -translate-y-1/2 flex flex-col items-center z-10">
-            <div 
-            data-parallax
-            className="bg-zinc-900 text-white z-20 px-8 py-3 rounded-3xl text-base md:text-xl font-semibold tracking-wide border border-zinc-700 mb-4">
+            <div
+              data-parallax
+              className="bg-zinc-900 text-white z-20 px-8 py-3 rounded-3xl text-base md:text-xl font-semibold tracking-wide border border-zinc-700 mb-4"
+            >
               User-Centered Design
             </div>
             <div className="bg-red-600 -mt-8 text-white px-3 py-4 rounded-3xl max-w-[250px] md:w-xs  w-full">
               <p
-              data-parallax
-              className="text-sm md:text-xl font-light leading-relaxed">
+                data-parallax
+                className="text-sm md:text-xl font-light leading-relaxed"
+              >
                 Platforms Are Built To Be Intuitive, Efficient, And Accessible.
               </p>
             </div>
@@ -302,14 +310,16 @@ const Home = () => {
           {/* 3. Bottom Center - Scalable Technology */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center z-10">
             <div
-            data-parallax
-            className="bg-zinc-900 text-white z-20 px-8 py-3 rounded-3xl text-base md:text-xl font-semibold tracking-wide border border-zinc-700 mb-4">
+              data-parallax
+              className="bg-zinc-900 text-white z-20 px-8 py-3 rounded-3xl text-base md:text-xl font-semibold tracking-wide border border-zinc-700 mb-4"
+            >
               Scalable Technology
             </div>
             <div className="bg-red-600 -mt-8 text-white px-3 py-4 rounded-3xl max-w-[200px] md:max-w-sm w-full ">
-              <p 
-              data-parallax
-              className="text-sm md:text-xl font-light leading-relaxed">
+              <p
+                data-parallax
+                className="text-sm md:text-xl font-light leading-relaxed"
+              >
                 Solutions Are Designed To Grow With The Needs Of The
                 Organization.
               </p>
@@ -337,10 +347,7 @@ const Home = () => {
                 Quick Links
               </h3>
               <div className="flex flex-col gap-1.5 text-[#590001]">
-                <Link
-                  to="/"
-                  className="hover:text-[#B00103] transition-colors"
-                >
+                <Link to="/" className="hover:text-[#B00103] transition-colors">
                   Home
                 </Link>
                 <Link
