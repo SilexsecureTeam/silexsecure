@@ -36,10 +36,12 @@ import cas17 from "../assets/cas17.png";
 import desktop from "../assets/desktop.png";
 import irescue from "../assets/irescue.png";
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const Case = () => {
   const location = useLocation();
+  const lastProjectRef = useRef(null);
+  const [showDesktop, setShowDesktop] = useState(true);
 
   const navlink = [
     { name: "Home", to: "/" },
@@ -191,99 +193,100 @@ const Case = () => {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (lastProjectRef.current) {
+        const rect = lastProjectRef.current.getBoundingClientRect();
+        setShowDesktop(rect.top + rect.height * 0.1 > 0);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="bg-[#590001] w-full h-fit">
       {/* ================= HEADER ================= */}
       <div className="fixed bg-[#B00103] w-full z-100 rounded-br-[100px]">
         <div className="sticky top-3.5 z-90 flex justify-center pointer-events-none">
-          <header className="pointer-events-auto flex w-[90%] md:w-fit items-center justify-between backdrop-blur-md bg-[#B00103]/20 border border-gray-300 rounded-full gap-6 px-8 py-3">
-            <img src={logo} alt="SilexSecure Logo" className="h-auto w-30" />
+          <div
+            className={`pointer-events-auto relative w-[90%] md:w-fit backdrop-blur-md bg-[#B00103]/20 border border-gray-300 transition-all duration-300 ${
+              menuOpen ? "rounded-t-[30px] border-b-0" : "rounded-[30px]"
+            }`}
+          >
+            {/* Header row */}
+            <header className="flex items-center justify-between gap-6 px-8 py-3">
+              <img src={logo} alt="SilexSecure Logo" className="h-auto w-30" />
 
-            {/* Desktop Nav */}
-            <div className="hidden md:flex space-x-1">
-              {navlink.map((link) => {
-                const isActive = location.pathname === link.to;
+              {/* Desktop Nav */}
+              <div className="hidden md:flex space-x-1">
+                {navlink.map((link) => {
+                  const isActive = location.pathname === link.to;
+                  return (
+                    <Link
+                      key={link.name}
+                      to={link.to}
+                      className={`px-4 py-2 text-white transition-all duration-300 rounded-full
+                       ${isActive ? "border border-white bg-white/10" : "hover:text-gray-300"}`}
+                    >
+                      {link.name}
+                    </Link>
+                  );
+                })}
+              </div>
 
-                return (
-                  <Link
-                    key={link.name}
-                    to={link.to}
-                    className={`px-4 py-2 text-white transition-all duration-300 rounded-full
-                    ${
-                      isActive
-                        ? "border border-white bg-white/10"
-                        : "hover:text-gray-300"
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                );
-              })}
-            </div>
+              {/* Hamburger */}
+              <button
+                className="md:hidden flex flex-col justify-center items-center gap-1.5 w-8 h-8 cursor-pointer"
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label="Toggle menu"
+              >
+                <span
+                  className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
+                />
+                <span
+                  className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`}
+                />
+                <span
+                  className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
+                />
+              </button>
+            </header>
 
-            {/* Hamburger */}
-            <button
-              className="md:hidden flex flex-col justify-center items-center gap-1.5 w-8 h-8 cursor-pointer"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle menu"
-            >
-              <span
-                className={`block w-6 h-0.5 bg-white transition-all duration-300 ${
-                  menuOpen ? "rotate-45 translate-y-2" : ""
-                }`}
-              />
-
-              <span
-                className={`block w-6 h-0.5 bg-white transition-all duration-300 ${
-                  menuOpen ? "opacity-0" : ""
-                }`}
-              />
-
-              <span
-                className={`block w-6 h-0.5 bg-white transition-all duration-300 ${
-                  menuOpen ? "-rotate-45 -translate-y-2" : ""
-                }`}
-              />
-            </button>
-          </header>
-
-          {/* Mobile Dropdown */}
-          {menuOpen && (
-            <div className="absolute pointer-events-auto top-full mt-0 w-[90%] backdrop-blur-md bg-[#B00103]/20 border border-gray-300 rounded-2xl overflow-hidden shadow-lg">
-              {navlink.map((link) => {
-                const isActive = location.pathname === link.to;
-
-                return (
-                  <Link
-                    key={link.name}
-                    to={link.to}
-                    onClick={() => setMenuOpen(false)}
-                    className={`block px-6 py-3 text-white transition-all duration-200
-                    ${
-                      isActive
-                        ? "bg-white/20 font-semibold"
-                        : "hover:bg-white/10"
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                );
-              })}
-            </div>
-          )}
+            {/* Mobile Dropdown — absolute so it doesn't push content down */}
+            {menuOpen && (
+              <div className="md:hidden absolute top-full left-0 right-0 border border-gray-300 border-t-0 rounded-b-[30px] backdrop-blur-md bg-[#B00103]/90 overflow-hidden">
+                {navlink.map((link) => {
+                  const isActive = location.pathname === link.to;
+                  return (
+                    <Link
+                      key={link.name}
+                      to={link.to}
+                      onClick={() => setMenuOpen(false)}
+                      className={`block px-6 py-3 text-white transition-all duration-200
+                     ${isActive ? "bg-white/20 font-semibold" : " hover:bg-white/10"}`}
+                    >
+                      {link.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
 
-        <h2 className="text-3xl md:text-5xl pl-10 font-black text-white mt-7 mb-5 max-w-[1400px] mx-auto">
+        <h2 className="text-3xl md:text-5xl pl-10 font-black text-white mt-14 md:mt-7 mb-5 max-w-[1400px] mx-auto">
           Case Study
         </h2>
       </div>
 
       {/* ================= MAIN ================= */}
       <div className="bg-[#590001] relative w-full rounded-br-[150px] md:pt-54 pt-40 pb-0 pl-0 md:pl-10">
-        <div className="relative max-w-[1400px] mx-auto flex flex-col gap-40 px-5 md:px-0 ">
+        <div className="relative max-w-[1400px] mx-auto mb-50 flex flex-col gap-15 md:gap-40 px-5 md:px-0 ">
           {projects.map((project, index) => (
             <div
               key={index}
+              ref={index === projects.length - 1 ? lastProjectRef : null}
               className="flex flex-col md:flex-row items-center justify-between gap-10"
             >
               {/* LEFT TEXT */}
@@ -291,11 +294,11 @@ const Case = () => {
                 <a
                   href={project.href}
                   target="_blank"
-                  className="text-3xl font-bold text-white hover:underline transition-all duration-300"
+                  className="text-2xl md:text-3xl font-bold text-white hover:underline transition-all duration-300"
                 >
                   {project.name}
                 </a>
-                <p className="mt-6 text-2xl text-white whitespace-pre-line">
+                <p className="mt-6 text-xl md:text-2xl text-white whitespace-pre-line">
                   {project.description}
                 </p>
               </div>
@@ -317,7 +320,7 @@ const Case = () => {
 
           {/* fixed monitor screen */}
           <div
-            className="hidden md:block fixed z-50"
+            className={`hidden md:block fixed z-50 transition-opacity duration-500 ${showDesktop ? "opacity-100" : "opacity-0 pointer-events-none"}`}
             style={{
               top: "13rem",
               right: `max(calc((100vw - 1400px) / 2), 2.0rem)`,
@@ -357,7 +360,7 @@ const Case = () => {
                     Home
                   </Link>
                   <Link
-                    to="https://bugbounty.defcomm.ng/"
+                    to="https://silexsecure.com/company/"
                     className="hover:text-[#B00103] transition-colors"
                   >
                     About
@@ -369,7 +372,7 @@ const Case = () => {
                     Case Study
                   </Link>
                   <Link
-                    to="https://bugbounty.defcomm.ng/contact"
+                    to="https://silexsecure.com/contact-us/"
                     className="hover:text-[#B00103] transition-colors"
                   >
                     Contact

@@ -6,8 +6,6 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export const useParallaxFade = (speed = 0.3) => {
-  // const [style, setStyle] = useState({});
-
   useEffect(() => {
     const handleScroll = () => {
       const elements = document.querySelectorAll("[data-parallax]");
@@ -15,22 +13,21 @@ export const useParallaxFade = (speed = 0.3) => {
       elements.forEach((el) => {
         const rect = el.getBoundingClientRect();
         const windowHeight = window.innerHeight;
-        const startFade = windowHeight * 0.85;
-        const endFade = windowHeight * 0.15;
+
+        // Element is invisible until it crosses the 85% mark (15% from bottom)
+        const triggerPoint = windowHeight * 0.95;
+
+        // Fully visible by the time it reaches 15% from top
+        const endPoint = windowHeight * 0.75;
 
         let progress = 0;
 
-        if (rect.top <= startFade && rect.bottom >= endFade) {
-          progress = 1 - (rect.top - endFade) / (startFade - endFade);
+        if (rect.top < triggerPoint) {
+          // How far past the trigger point has it travelled
+          progress = (triggerPoint - rect.top) / (triggerPoint - endPoint);
         }
 
         const clamped = Math.max(0, Math.min(1, progress));
-
-        // const start = windowHeight * 0.95; // 15% from bottom
-        // const end = windowHeight * 0.05;   // 15% from top
-
-        // const progress = (start - rect.top) / (start - end);
-        // const clamped = Math.max(0, Math.min(1, progress));
 
         const translateY = (1 - clamped) * 60 * speed;
         const opacity = clamped;
@@ -46,8 +43,6 @@ export const useParallaxFade = (speed = 0.3) => {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [speed]);
-
-  // return style;
 };
 
 const Home = () => {
@@ -63,64 +58,71 @@ const Home = () => {
   return (
     <div className="bg-black w-full h-fit">
       {/* ===================== STICKY PILL HEADER ===================== */}
-      <div className="sticky top-5 z-90 flex justify-center pointer-events-none">
-        <header className="pointer-events-auto flex w-[90%] md:w-fit items-center justify-between backdrop-blur-md bg-[#B00103]/20 border border-gray-300 rounded-full gap-6 px-8 py-4">
-          <img src={logo} alt="SilexSecure Logo" className="h-auto w-30" />
+      <div className="sticky top-3.5 z-90 flex justify-center pointer-events-none">
+        <div
+          className={`pointer-events-auto relative w-[90%] md:w-fit backdrop-blur-md bg-[#B00103]/20 border border-gray-300 transition-all duration-300 ${
+            menuOpen ? "rounded-t-[30px] border-b-0" : "rounded-[30px]"
+          }`}
+        >
+          {/* Header row */}
+          <header className="flex items-center justify-between gap-6 px-8 py-3">
+            <img src={logo} alt="SilexSecure Logo" className="h-auto w-30" />
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex space-x-1">
-            {navlink.map((link) => {
-              const isActive = location.pathname === link.to;
-              return (
-                <Link
-                  key={link.name}
-                  to={link.to}
-                  className={`px-4 py-2 text-white transition-all duration-300 rounded-full
-              ${isActive ? "border border-white bg-white/10" : "hover:text-gray-300"}`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
-          </div>
+            {/* Desktop Nav */}
+            <div className="hidden md:flex space-x-1">
+              {navlink.map((link) => {
+                const isActive = location.pathname === link.to;
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.to}
+                    className={`px-4 py-2 text-white transition-all duration-300 rounded-full
+                ${isActive ? "border border-white bg-white/10" : "hover:text-gray-300"}`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </div>
 
-          {/* Hamburger Button (mobile only) */}
-          <button
-            className="md:hidden flex flex-col justify-center items-center gap-1.5 w-8 h-8 cursor-pointer"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            <span
-              className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
-            />
-            <span
-              className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`}
-            />
-            <span
-              className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
-            />
-          </button>
-        </header>
+            {/* Hamburger */}
+            <button
+              className="md:hidden flex flex-col justify-center items-center gap-1.5 w-8 h-8 cursor-pointer"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+            >
+              <span
+                className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
+              />
+              <span
+                className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`}
+              />
+              <span
+                className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
+              />
+            </button>
+          </header>
 
-        {/* Mobile Dropdown Menu */}
-        {menuOpen && (
-          <div className="absolute pointer-events-auto top-full mt-0 w-[90%] backdrop-blur-md bg-[#B00103]/20 border border-gray-300 rounded-2xl overflow-hidden shadow-lg">
-            {navlink.map((link) => {
-              const isActive = location.pathname === link.to;
-              return (
-                <Link
-                  key={link.name}
-                  to={link.to}
-                  onClick={() => setMenuOpen(false)}
-                  className={`block px-6 py-3 text-white transition-all duration-200
-              ${isActive ? "bg-white/20 font-semibold" : "hover:bg-white/10"}`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
-          </div>
-        )}
+          {/* Mobile Dropdown — absolute so it doesn't push content down */}
+          {menuOpen && (
+            <div className="md:hidden absolute top-full left-0 right-0 border-l border-r border-b border-gray-300 rounded-b-[30px] backdrop-blur-md bg-[#B00103]/90 overflow-hidden">
+              {navlink.map((link) => {
+                const isActive = location.pathname === link.to;
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.to}
+                    onClick={() => setMenuOpen(false)}
+                    className={`block px-6 py-3 text-white transition-all duration-200
+              ${isActive ? "bg-white/20 font-semibold" : " hover:bg-white/10"}`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* ===================== RED GRADIENT SECTION ===================== */}
@@ -163,52 +165,52 @@ const Home = () => {
                 <div className="space-y-4">
                   {/* Top Row - 2 Items */}
                   <div className="flex flex-row gap-8 justify-center">
-                    <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
+                    <div className="flex-1 max-w-xs bg-black/50 p-3 md:p-5 rounded-full">
                       <h3
                         data-parallax
-                        className="text-lg md:text-4xl text-start text-white font-black mb-3"
+                        className="text-lg md:text-4xl text-start text-white leading-none font-black font-['Poppins']"
                       >
-                        aviation
+                        Aviation
                       </h3>
                     </div>
-                    <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
+                    <div className="flex-1 max-w-xs bg-black/50  p-3 md:p-5 rounded-full">
                       <h3
                         data-parallax
-                        className="text-lg md:text-4xl text-start text-white font-black mb-3"
+                        className="text-lg md:text-4xl text-start text-white font-black leading-none font-['Poppins']"
                       >
-                        e-commerce
+                        e-Commerce
                       </h3>
                     </div>
                   </div>
 
                   {/* Middle - Single Centered Item */}
                   <div className="flex justify-center ">
-                    <div className="md:flex-1 w-[180px]  md:max-w-xs bg-black/50 p-3 rounded-full">
+                    <div className="md:flex-1 w-[180px]  md:max-w-xs bg-black/50 p-3 md:p-5 rounded-full">
                       <h3
                         data-parallax
-                        className="text-lg md:text-4xl text-start text-white font-black mb-4"
+                        className="text-lg md:text-4xl text-start text-white font-black leading-none font-['Poppins']"
                       >
-                        enterprise
+                        Enterprise
                       </h3>
                     </div>
                   </div>
 
                   {/* Bottom Row - 2 Items */}
                   <div className="flex flex-row gap-8 justify-center">
-                    <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
+                    <div className="flex-1 max-w-xs bg-black/50 p-3 md:p-5 rounded-full">
                       <h3
                         data-parallax
-                        className="text-lg md:text-4xl text-start text-white font-black mb-3"
+                        className="text-lg md:text-4xl text-start text-white font-black leading-none font-['Poppins']"
                       >
-                        oil and gas
+                        Oil And Gas
                       </h3>
                     </div>
-                    <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
+                    <div className="flex-1 max-w-xs bg-black/50 p-3 md:p-5 rounded-full">
                       <h3
                         data-parallax
-                        className="text-lg md:text-4xl text-start text-white font-black mb-3"
+                        className="text-lg md:text-4xl text-start text-white font-black leading-none font-['Poppins']"
                       >
-                        government
+                        Government
                       </h3>
                     </div>
                   </div>
@@ -227,7 +229,7 @@ const Home = () => {
               <img
                 src={des}
                 alt="Design"
-                className="hidden md:block w-full h-110"
+                className="hidden md:block w-full max-w-[433px] h-110"
               />
               <img
                 src={des1}
@@ -242,7 +244,7 @@ const Home = () => {
       {/* END RED GRADIENT */}
 
       {/* ===================== OUR APPROACH ===================== */}
-      <div className="max-w-[1400px] mx-auto">
+      <div className="">
         <div className="bg-white w-[99%] mx-auto  md:mx-0 md:w-3/4 relative z-50 px-5 md:px-10 py-5 rounded-[50px] md:rounded-r-full my-8">
           <h2 className="text-[#590001] text-3xl font-extrabold mb-6">
             Our Approach
@@ -260,80 +262,83 @@ const Home = () => {
       </div>
 
       {/* ===================== FULL CIRCLE SECTION ===================== */}
-      <div className="bg-black -ml-20 md:-ml-30 py-5  flex overflow-hidden relative">
-        <div className="relative z-50 w-full  md:w-6/9 aspect-square">
-          {/* FULL WHITE CIRCLE */}
-          <div className="absolute inset-0  aspect-square pointer-events-none">
-            <svg
-              className="w-full h-full"
-              viewBox="0 0 900 900"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle
-                cx="450"
-                cy="450"
-                r="365"
-                stroke="#ffffff"
-                strokeWidth="1"
-                strokeOpacity="0.85"
+      <div className="bg-black py-5 flex overflow-hidden relative">
+        <div className="w-full max-w-[1400px] mx-auto">
+          <div className="relative z-50 w-full md:w-6/9 aspect-square -ml-20 md:-ml-30">
+            {/* FULL WHITE CIRCLE */}
+            <div className="absolute inset-0  aspect-square pointer-events-none">
+              <svg
+                className="w-full h-full"
+                viewBox="0 0 900 900"
                 fill="none"
-              />
-            </svg>
-          </div>
-
-          {/* 1. Top Center - Security By Design */}
-          <div className="absolute top-[-2px] md:top-8 left-1/2 -translate-x-1/2 flex flex-col items-center z-10">
-            <div
-              data-parallax
-              className="bg-zinc-900 text-white z-20 px-8 py-3 rounded-3xl text-sm md:text-xl font-semibold tracking-wide border border-zinc-700 mb-4"
-            >
-              Security By Design
-            </div>
-            <div className="bg-red-600 -mt-8 text-white px-3 py-4 rounded-3xl max-w-[250px] md:max-w-sm w-full ">
-              <p
-                data-parallax
-                className="text-sm md:text-xl font-light leading-relaxed"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                Security Is Embedded From System Architecture To Deployment.
-              </p>
+                <circle
+                  cx="450"
+                  cy="450"
+                  r="365"
+                  stroke="#ffffff"
+                  strokeWidth="1"
+                  strokeOpacity="0.85"
+                  fill="none"
+                />
+              </svg>
             </div>
-          </div>
 
-          {/* 2. Right Side - User-Centered Design */}
-          <div className="absolute top-1/2 right-[30px] md:right-[-180px] -translate-y-1/2 flex flex-col items-center z-10">
-            <div
-              data-parallax
-              className="bg-zinc-900 text-white z-20 px-8 py-3 rounded-3xl text-base md:text-xl font-semibold tracking-wide border border-zinc-700 mb-4"
-            >
-              User-Centered Design
-            </div>
-            <div className="bg-red-600 -mt-8 text-white px-3 py-4 rounded-3xl max-w-[250px] md:w-xs  w-full">
-              <p
+            {/* 1. Top Center - Security By Design */}
+            <div className="absolute top-[-2px] md:top-8 left-1/2 -translate-x-1/2 flex flex-col items-start z-10">
+              <div
                 data-parallax
-                className="text-sm md:text-xl font-light leading-relaxed"
+                className="bg-zinc-900 text-white z-20 px-8 py-3 rounded-3xl text-sm md:text-xl font-semibold tracking-wide border border-zinc-700 mb-4"
               >
-                Platforms Are Built To Be Intuitive, Efficient, And Accessible.
-              </p>
+                Security By Design
+              </div>
+              <div className="bg-red-600 -mt-8 text-white px-3 py-4 rounded-3xl max-w-[250px] md:max-w-sm w-full ">
+                <p
+                  data-parallax
+                  className="text-sm md:text-xl font-light leading-relaxed"
+                >
+                  Security Is Embedded From System Architecture To Deployment.
+                </p>
+              </div>
             </div>
-          </div>
 
-          {/* 3. Bottom Center - Scalable Technology */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center z-10">
-            <div
-              data-parallax
-              className="bg-zinc-900 text-white z-20 px-8 py-3 rounded-3xl text-base md:text-xl font-semibold tracking-wide border border-zinc-700 mb-4"
-            >
-              Scalable Technology
-            </div>
-            <div className="bg-red-600 -mt-8 text-white px-3 py-4 rounded-3xl max-w-[200px] md:max-w-sm w-full ">
-              <p
+            {/* 2. Right Side - User-Centered Design */}
+            <div className="absolute top-1/2 right-[30px] md:right-[-180px] -translate-y-1/2 flex flex-col items-start z-10">
+              <div
                 data-parallax
-                className="text-sm md:text-xl font-light leading-relaxed"
+                className="bg-zinc-900 text-white z-20 px-8 py-3 rounded-3xl text-base md:text-xl font-semibold tracking-wide border border-zinc-700 mb-4"
               >
-                Solutions Are Designed To Grow With The Needs Of The
-                Organization.
-              </p>
+                User-Centered Design
+              </div>
+              <div className="bg-red-600 -mt-8 text-white px-3 py-4 rounded-3xl max-w-[250px] md:max-w-sm  w-full">
+                <p
+                  data-parallax
+                  className="text-sm md:text-xl font-light leading-relaxed"
+                >
+                  Platforms Are Built To Be Intuitive, Efficient, And
+                  Accessible.
+                </p>
+              </div>
+            </div>
+
+            {/* 3. Bottom Center - Scalable Technology */}
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-start z-10">
+              <div
+                data-parallax
+                className="bg-zinc-900 text-white z-20 px-8 py-3 rounded-3xl text-base md:text-xl font-semibold tracking-wide border border-zinc-700 mb-4"
+              >
+                Scalable Technology
+              </div>
+              <div className="bg-red-600 -mt-8 text-white px-3 py-4 rounded-3xl max-w-[250px] md:max-w-sm w-full ">
+                <p
+                  data-parallax
+                  className="text-sm md:text-xl font-light leading-relaxed"
+                >
+                  Solutions Are Designed To Grow With The Needs Of The
+                  Organization.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -362,7 +367,7 @@ const Home = () => {
                   Home
                 </Link>
                 <Link
-                  to="https://bugbounty.defcomm.ng/"
+                  to="https://silexsecure.com/company/"
                   className="hover:text-[#B00103] transition-colors"
                 >
                   About
@@ -374,7 +379,7 @@ const Home = () => {
                   Case Study
                 </Link>
                 <Link
-                  to="https://bugbounty.defcomm.ng/contact"
+                  to="https://silexsecure.com/contact-us/"
                   className="hover:text-[#B00103] transition-colors"
                 >
                   Contact
