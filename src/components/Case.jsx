@@ -273,14 +273,14 @@ const Case = () => {
           )}
         </div>
 
-        <h2 className="text-3xl md:text-5xl pl-10 font-black text-white mt-7 mb-5">
+        <h2 className="text-3xl md:text-5xl pl-10 font-black text-white mt-7 mb-5 max-w-[1400px] mx-auto">
           Case Study
         </h2>
       </div>
 
       {/* ================= MAIN ================= */}
       <div className="bg-[#590001] relative w-full rounded-br-[150px] md:pt-54 pt-40 pb-0 pl-0 md:pl-10">
-        <div className="w-full flex flex-col gap-40 px-5 md:px-0">
+        <div className="relative max-w-[1400px] mx-auto flex flex-col gap-40 px-5 md:px-0 ">
           {projects.map((project, index) => (
             <div
               key={index}
@@ -314,15 +314,21 @@ const Case = () => {
               </div>
             </div>
           ))}
-        </div>
 
-        {/* fixed monitor screen */}
-        <div className="md:fixed hidden md:block absolute top-52 right-8  z-50">
-          <img
-            src={desktop}
-            alt="Desktop Monitor"
-            className="w-[460px] h-[350px]"
-          />
+          {/* fixed monitor screen */}
+          <div
+            className="hidden md:block fixed z-50"
+            style={{
+              top: "13rem",
+              right: `max(calc((100vw - 1400px) / 2), 2.0rem)`,
+            }}
+          >
+            <img
+              src={desktop}
+              alt="Desktop Monitor"
+              className="w-[460px] h-[350px]"
+            />
+          </div>
         </div>
 
         {/* ===================== FOOTER ===================== */}

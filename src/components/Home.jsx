@@ -126,106 +126,115 @@ const Home = () => {
       {/* ===================== RED GRADIENT SECTION ===================== */}
       <div className="bg-gradient-to-b from-[#B00103] to-[#590001] w-full h-full rounded-br-[150px] pl-0 md:pl-10 -mt-19">
         {/* ===================== HERO SECTION ===================== */}
-        <div className="w-full flex flex-col md:flex-row items-start justify-center md:justify-between gap-6 px-5 md:px-0 relative pt-44">
-          {/* LEFT COLUMN — contains hero text + industry pills, grows tall */}
-          <div className="w-full md:w-2/3">
-            <h2 className="md:text-6xl text-2xl text-center md:text-start font-bold text-white">
-              Elevating your{" "}
-              <span className="md:text-8xl text-3xl font-black">
-                Digital Presence
-              </span>{" "}
-              with <span className="text-[#000000]">Custom Web Solutions</span>
-            </h2>
+        <div className="w-full flex justify-center">
+          <div className="w-full max-w-[1400px] flex flex-col md:flex-row items-start justify-between gap-6 px-5 relative pt-44">
+            {/* LEFT COLUMN — contains hero text + industry pills, grows tall */}
+            <div className="w-full md:w-2/3">
+              <h2 className="md:text-6xl text-2xl text-center md:text-start font-bold text-white">
+                Elevating your{" "}
+                <span className="md:text-8xl text-3xl font-black">
+                  Digital Presence
+                </span>{" "}
+                with{" "}
+                <span className="text-[#000000]">Custom Web Solutions</span>
+              </h2>
 
-            {/* RIGHT COLUMN — sticky hero image ONLY on desktop */}
-            <div className="w-full block mt-3 md:hidden">
-              <img
-                src={des}
-                alt="Design"
-                className="hidden md:block w-full h-full"
-              />
-              <img
-                src={des1}
-                alt="Design"
-                className="block md:hidden w-full h-full"
-              />
-            </div>
+              {/* RIGHT COLUMN — sticky hero image ONLY on desktop */}
+              <div className="w-full block mt-3 md:hidden">
+                <img
+                  src={des}
+                  alt="Design"
+                  className="hidden md:block w-full h-full"
+                />
+                <img
+                  src={des1}
+                  alt="Design"
+                  className="block md:hidden w-full h-full"
+                />
+              </div>
 
-            <p className="mt-10 text-xl md:w-4/5 text-center md:text-start text-white">
-              Silex Secure has developed and implemented digital platforms
-              across multiple sectors including,
-            </p>
+              <p className="mt-10 text-xl md:w-4/5 text-center md:text-start text-white">
+                Silex Secure has developed and implemented digital platforms
+                across multiple sectors including,
+              </p>
 
-            {/* list section — moved inside left column so it adds height next to the sticky image */}
-            <div className="py-20 w-full text-white">
-              <div className="space-y-4">
-                {/* Top Row - 2 Items */}
-                <div className="flex flex-row gap-8 justify-center">
-                  <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
-                    <h3
-                      data-parallax
-                      className="text-lg md:text-4xl text-start text-white font-black mb-3"
-                    >
-                      aviation
-                    </h3>
+              {/* list section — moved inside left column so it adds height next to the sticky image */}
+              <div className="py-20 w-full text-white">
+                <div className="space-y-4">
+                  {/* Top Row - 2 Items */}
+                  <div className="flex flex-row gap-8 justify-center">
+                    <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
+                      <h3
+                        data-parallax
+                        className="text-lg md:text-4xl text-start text-white font-black mb-3"
+                      >
+                        aviation
+                      </h3>
+                    </div>
+                    <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
+                      <h3
+                        data-parallax
+                        className="text-lg md:text-4xl text-start text-white font-black mb-3"
+                      >
+                        e-commerce
+                      </h3>
+                    </div>
                   </div>
-                  <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
-                    <h3
-                      data-parallax
-                      className="text-lg md:text-4xl text-start text-white font-black mb-3"
-                    >
-                      e-commerce
-                    </h3>
-                  </div>
-                </div>
 
-                {/* Middle - Single Centered Item */}
-                <div className="flex justify-center ">
-                  <div className="md:flex-1 w-[180px]  md:max-w-xs bg-black/50 p-3 rounded-full">
-                    <h3
-                      data-parallax
-                      className="text-lg md:text-4xl text-start text-white font-black mb-4"
-                    >
-                      enterprise
-                    </h3>
+                  {/* Middle - Single Centered Item */}
+                  <div className="flex justify-center ">
+                    <div className="md:flex-1 w-[180px]  md:max-w-xs bg-black/50 p-3 rounded-full">
+                      <h3
+                        data-parallax
+                        className="text-lg md:text-4xl text-start text-white font-black mb-4"
+                      >
+                        enterprise
+                      </h3>
+                    </div>
                   </div>
-                </div>
 
-                {/* Bottom Row - 2 Items */}
-                <div className="flex flex-row gap-8 justify-center">
-                  <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
-                    <h3
-                      data-parallax
-                      className="text-lg md:text-4xl text-start text-white font-black mb-3"
-                    >
-                      oil and gas
-                    </h3>
-                  </div>
-                  <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
-                    <h3
-                      data-parallax
-                      className="text-lg md:text-4xl text-start text-white font-black mb-3"
-                    >
-                      government
-                    </h3>
+                  {/* Bottom Row - 2 Items */}
+                  <div className="flex flex-row gap-8 justify-center">
+                    <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
+                      <h3
+                        data-parallax
+                        className="text-lg md:text-4xl text-start text-white font-black mb-3"
+                      >
+                        oil and gas
+                      </h3>
+                    </div>
+                    <div className="flex-1 max-w-xs bg-black/50 p-3 rounded-full">
+                      <h3
+                        data-parallax
+                        className="text-lg md:text-4xl text-start text-white font-black mb-3"
+                      >
+                        government
+                      </h3>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* RIGHT COLUMN — sticky hero image ONLY on desktop */}
-          <div className="w-full hidden md:block md:w-1/3 md:fixed md:right-0 md:z-30 md:top-40 self-start">
-            <img
-              src={des}
-              alt="Design"
-              className="hidden md:block w-full h-110"
-            />
-            <img
-              src={des1}
-              alt="Design"
-              className="block md:hidden w-full h-110"
-            />
+            {/* RIGHT COLUMN — sticky hero image ONLY on desktop */}
+            <div
+              className="w-full hidden md:block md:w-1/3 md:fixed md:z-30 md:top-40 self-start"
+              style={{
+                right: 0,
+                maxWidth: `calc((100vw - 1400px) / 2 + 33.333%)`,
+              }}
+            >
+              <img
+                src={des}
+                alt="Design"
+                className="hidden md:block w-full h-110"
+              />
+              <img
+                src={des1}
+                alt="Design"
+                className="block md:hidden w-full h-110"
+              />
+            </div>
           </div>
         </div>
         {/* END HERO + LIST SECTION */}
@@ -233,19 +242,21 @@ const Home = () => {
       {/* END RED GRADIENT */}
 
       {/* ===================== OUR APPROACH ===================== */}
-      <div className="bg-white w-[99%] mx-auto md:mx-0 md:w-3/4 relative z-50 px-5 md:px-10 py-5 rounded-[50px] md:rounded-r-full my-8">
-        <h2 className="text-[#590001] text-3xl font-extrabold mb-6">
-          Our Approach
-        </h2>
-        <p className="text-[#590001] text-justify md:text-start text-lg">
-          Our approach integrates high performance architecture with intuitive
-          user experiences (ux), ensuring that every line of code serves a
-          strategic purpose, from lead generation to seamless scalability.
-          <br /> <br />
-          This portfolio showcases our commitment to transforming complex
-          business requirements into elegant, secure, and high-converting
-          digital platforms.
-        </p>
+      <div className="max-w-[1400px] mx-auto">
+        <div className="bg-white w-[99%] mx-auto  md:mx-0 md:w-3/4 relative z-50 px-5 md:px-10 py-5 rounded-[50px] md:rounded-r-full my-8">
+          <h2 className="text-[#590001] text-3xl font-extrabold mb-6">
+            Our Approach
+          </h2>
+          <p className="text-[#590001] text-justify md:text-start text-lg">
+            Our approach integrates high performance architecture with intuitive
+            user experiences (ux), ensuring that every line of code serves a
+            strategic purpose, from lead generation to seamless scalability.
+            <br /> <br />
+            This portfolio showcases our commitment to transforming complex
+            business requirements into elegant, secure, and high-converting
+            digital platforms.
+          </p>
+        </div>
       </div>
 
       {/* ===================== FULL CIRCLE SECTION ===================== */}
